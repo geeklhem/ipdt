@@ -67,13 +67,12 @@ import ipdt.tournament
 import ipdt.players
 
 # === SET THE PARAMETERS ===
-
+param = {}
 param["T"] = args.turns
 param["replicas"] = args.replicas
 
 # Payoff matrix 
 order = ["cc","cd","dc","dd"]
-param = {}
 for move,po in zip(order,args.payoff_matrix):
     param[move] = po
 
