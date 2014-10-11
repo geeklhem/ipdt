@@ -1,0 +1,58 @@
+# ipdt : Iterate Prisoner's dilemma tournament
+
+ipdt (_Iterative Prisoner's Dilemma Tournament_) is a simple software
+to organise iterative prisoner's dilemma competition between different
+strategies.
+
+It has been writen for the "[Mathematics and Biology Workgroup](http://www.gt-mathsbio.biologie.ens.fr/)" in the
+École normale supérieure (Paris, France).
+
+## How to 
+### Just test it
+To test it if you have python2.7 and pip installed you can just type:
+
+```Shell
+# Global install:
+$ sudo pip install -U https://github.com/geeklhem/ipdt/zipball/master 
+# Local install (do not need root privileges):
+$ pip --user install  -U https://github.com/geeklhem/ipdt/zipball/master
+# To uninstall 
+$ sudo pip uninstall ipdt
+``` 
+
+Then you can run a tournament between all defnined strategies:
+```Shell
+$ ipdt tournament 
+``` 
+
+You can restrict the tournament to a subset of strategies:
+```Shell
+# list all avaiable strategies
+$ ipdt list
+# A tournament with only two strategies 
+$ ipdt tournament --players naivecoop defector randomplayer
+``` 
+
+You can also run a single match between two strategies:
+```Shell
+$ ipdt match -p naivecoop randomplayer
+```
+
+If you want more detailed info on the output, you can use the options
+(from the more to the less detailed output) `-v`: warnings (default),
+`-vv` info or `-vvv` debug.
+
+### Write a strategy
+
+(coming soon) 
+
+### Submit a strategy 
+
+(coming soon)
+
+## Licence
+
+This program is ditributed under the term of the GNU General Public
+Licence v3 (or later) with ABSOLUTELY NO WARRANTY. This is free
+software, and you are welcome to redistribute it. 
+
