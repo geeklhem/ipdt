@@ -41,11 +41,19 @@ def tournament(players,param):
             raise ValueError("Two players have the same name.")
 
     for i in range(param["replicas"]):
+        for P in pl.keys():
+            try:
+                payoff = match(pl[P],pl[P],param)
+            except Exception as e:
+                logger.critical("{0} throw an exception playing against itself : {} ".format(P,e))
+            else:
+                points[P] += payoff[0] + payoff[1]
+                logger.info("{0} against itself ({1}pts)".format(P,points[P]))
+
+                            
         for P1,P2 in itertools.combinations(pl.keys(),2):
 
-            payoff = match(pl[P1],pl[P2],param)
-            diff_payoff = payoff[0] - payoff[1]
-            
+            payoff = match(pl[P1],pl[P2],param)          
 
             points[P1] += payoff[0]
             points[P2] += payoff[1]
