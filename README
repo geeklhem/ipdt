@@ -39,7 +39,7 @@ $ ipdt match -p naivecoop randomplayer
 ```
 
 If you want more detailed info on the output, you can use the options
-(from the more to the less detailed output) `-v`: warnings (default),
+(from the less to the more detailed output) `-v`: warnings (default),
 `-vv` info or `-vvv` debug.
 
 ### Write a strategy
