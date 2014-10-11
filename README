@@ -9,7 +9,7 @@ It has been written for the "[Mathematics and Biology Workgroup](http://www.gt-m
 
 ## How to 
 ### Just test it
-To test it if you have python2.7 and pip installed you can just type:
+To test it, if you have python2.7 and pip available the installation is quite simple:
 
 ```bash
 # Global install:
@@ -63,21 +63,21 @@ in the `players/` folder. Several strategies are bundled with the
 code, it is a good idea to go and check them.
 
 A strategy module to be valid must:
-- Have a different name than the other modules.
-- Contain a `Player` object inheriting from `ipdt.player.Player` 
+- Have a different name than the other modules,
+- Contain a `Player` class inheriting from `ipdt.player.Player`, 
 - This object must have a method `play(self,last_move)` that take the
   opponent last move (as a boolean, `True` for cooperation, `False` for
   defection and `None` in the first round) and return a boolean for your
-  move (same convention)
+  move (same convention).
 
 You can:
 - Write an `__init__(self,param)` function, that will be ran before
   the beginning of the match, to set up some attributes and reads the
   dictionary `param` containing the match parameters (`param["T"]`
   contains the number of successive rounds,
-  `param["cd"],param["cc"],param["dc"],param["dd"],` contains the
+  `param["cd"], param["cc"], param["dc"], param["dd"],` contains the
   payoff matrix (the first character is the move: `c` or `d` of the
-  focal player). 
+  focal player),
 - Define the `Player.name` and `Player.author` class variable to
   characterize your strategy.
 
