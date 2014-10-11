@@ -70,14 +70,14 @@ A strategy module to be valid must:
   defection and `None` in the first round) and return a boolean for your
   move (same convention).
 
-You can:
+You can also:
 - Write an `__init__(self,param)` function, that will be ran before
-  the beginning of the match, to set up some attributes and reads the
-  dictionary `param` containing the match parameters (`param["T"]`
-  contains the number of successive rounds,
+  the beginning of the match, to set up some attributes. You can also
+  use it to read the dictionary `param` containing the match
+  parameters: `param["T"]` contains the number of successive rounds,
   `param["cd"], param["cc"], param["dc"], param["dd"],` contains the
   payoff matrix (the first character is the move: `c` or `d` of the
-  focal player),
+  focal player);
 - Define the `Player.name` and `Player.author` class variable to
   characterize your strategy.
 
