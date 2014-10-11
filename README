@@ -93,10 +93,10 @@ class Player(ipdt.player.Player):
 	
 	def __init__(self,param):
         """
-            Use this function to set up match wise attributes.
+        Use this function to set up match wise attributes.
 
-            Args:
-                param (dict): the match parameters.
+        Args:
+            param (dict): the match parameters.
 		"""
 		pass 
 
