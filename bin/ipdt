@@ -35,7 +35,7 @@ parser.add_argument('-m','--payoff_matrix',
                     type=float,
                     help='Payoff matrix CC,CD,DC,DD',
                     nargs=4,
-                    default=(10,-5,20,0))
+                    default=(1,-1,2,0))
 
 
 args = parser.parse_args()
@@ -81,7 +81,15 @@ if args.command == "match":
     elif payoff[0]==payoff[1]:
         winner = "NOBODY"
     else:
-        winner = "P2"
+        winner = "P2" 
     print("Match endend: {} WINS !".format(winner))
     logger.info("Payoffs: {}".format(payoff))
+
+if args.command == "tournament":
+    players = [ getattr(ipdt.players, name).Player for name in ipdt.players.__all__]
+    ranking = ipdt.tournament.tournament(players,param)
+    print("Tournament ended ! Ranking:")
+    for n,(score,name) in enumerate(ranking):
+        print("{}: {} ({} points)".format(n+1,name,score))
     
+
