@@ -21,7 +21,7 @@ def tournament(players,param):
         param (dict) Match parameters.
 
     Returns: 
-        (list): the elo ranking of players (name,score) 
+        (list): ranked of players (score,name) 
     """
     for k,v in DEFAULT_PARAM.items():
         if k not in param:

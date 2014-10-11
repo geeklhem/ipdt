@@ -30,6 +30,11 @@ parser.add_argument('-T','--turns',
                     type=int,
                     help='Number of turns',
                     default=100)
+parser.add_argument('--replicas',
+                    type=int,
+                    help='Number of repetition of the tornament',
+                    default=1)
+
 
 parser.add_argument('-m','--payoff_matrix',
                     type=float,
@@ -61,18 +66,24 @@ logger.addHandler(ch)
 import ipdt.tournament
 import ipdt.players
 
-if len(args.players) == 0:
-    args.players = ipdt.players.__all__
-    
+# === SET THE PARAMETERS ===
+
+param["T"] = args.turns
+param["replicas"] = args.replicas
+
+# Payoff matrix 
 order = ["cc","cd","dc","dd"]
 param = {}
 for move,po in zip(order,args.payoff_matrix):
     param[move] = po
-param["T"] = args.turns
+
+# If there is no players defined, take all possible strategies
+if len(args.players) == 0:
+    args.players = ipdt.players.__all__
+    
 
 
-if args.command == "match":
-
+if args.command == "match":   
     if hasattr(ipdt.players, args.players[0]):
        P1= getattr(ipdt.players, args.players[0]).Player
     if hasattr(ipdt.players, args.players[1]):
@@ -95,7 +106,6 @@ if args.command == "tournament":
     for n,(score,name) in enumerate(ranking):
         print("{}: {} ({} points)".format(n+1,name,score))
     
-
 if args.command == "list":
     print("Available strategies are:")
     print("{:20} {:20} {}".format("Code","Author","Name"))
