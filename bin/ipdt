@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 """ipdt - Copyright 2014 Guilhem Doulcier.
 
-ipdt (Iterative Prisoner's Dilemma Tournament) is a simple software to
+ipdt (Iterated Prisoner's Dilemma Tournament) is a simple software to
 organise iterative prisoner's dilemma competition between strategies.
 
-This program is ditributed under the term of the GNU General Public
-Licence v3 (or later) with ABSOLUTELY NO WARRANTY. This is free
+This program is distributed under the term of the GNU General Public
+License v3 (or later) with ABSOLUTELY NO WARRANTY. This is free
 software, and you are welcome to redistribute it.
 """
 
@@ -20,12 +20,12 @@ parser.add_argument('command',
                     type=str)
 parser.add_argument('-p','--players',
                     nargs="*",
-                    default=["naivecoop","defector"],
+                    default=[],
                     help="players names")
 parser.add_argument('-v','--verbose',
                     help='Verbosity level : -v warning, -vv info, -vvv debug, (default debug)',
                     action="count",
-                    default=-1)
+                    default=0)
 parser.add_argument('-T','--turns',
                     type=int,
                     help='Number of turns',
@@ -61,6 +61,9 @@ logger.addHandler(ch)
 import ipdt.tournament
 import ipdt.players
 
+if len(args.players) == 0:
+    args.players = ipdt.players.__all__
+    
 order = ["cc","cd","dc","dd"]
 param = {}
 for move,po in zip(order,args.payoff_matrix):
@@ -86,10 +89,19 @@ if args.command == "match":
     logger.info("Payoffs: {}".format(payoff))
 
 if args.command == "tournament":
-    players = [ getattr(ipdt.players, name).Player for name in ipdt.players.__all__]
+    players = [ getattr(ipdt.players, name).Player for name in args.players]
     ranking = ipdt.tournament.tournament(players,param)
     print("Tournament ended ! Ranking:")
     for n,(score,name) in enumerate(ranking):
         print("{}: {} ({} points)".format(n+1,name,score))
     
 
+if args.command == "list":
+    print("Available strategies are:")
+    print("{:20} {:20} {}".format("Code","Author","Name"))
+    print("-"*20+"+"+"-"*20+"+"+"-"*30)
+    available = ["{1:20} {2:20} {0}".format(getattr(ipdt.players, code).Player.name,
+                                     code,
+                                     getattr(ipdt.players, code).Player.author)
+               for code in args.players]
+    print "\n".join(available)
