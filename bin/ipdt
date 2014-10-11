@@ -26,6 +26,11 @@ parser.add_argument('-v','--verbose',
                     help='Verbosity level : -v warning, -vv info, -vvv debug, (default debug)',
                     action="count",
                     default=-1)
+parser.add_argument('-T','--turns',
+                    type=int,
+                    help='Number of turns',
+                    default=100)
+
 parser.add_argument('-m','--payoff_matrix',
                     type=float,
                     help='Payoff matrix CC,CD,DC,DD',
@@ -60,6 +65,8 @@ order = ["cc","cd","dc","dd"]
 param = {}
 for move,po in zip(order,args.payoff_matrix):
     param[move] = po
+param["T"] = args.turns
+
 
 if args.command == "match":
 
