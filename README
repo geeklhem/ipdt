@@ -1,7 +1,7 @@
-# ipdt : Iterate Prisoner's dilemma tournament
+# ipdt : Iterated Prisoner's dilemma tournament
 
-ipdt (_Iterative Prisoner's Dilemma Tournament_) is a simple software
-to organize iterative prisoner's dilemma competition between different
+ipdt (_Iterated Prisoner's Dilemma Tournament_) is a simple software
+to organize iterated prisoner's dilemma competition between different
 strategies.
 
 It has been written for the "[Mathematics and Biology Workgroup](http://www.gt-mathsbio.biologie.ens.fr/)" in the
@@ -11,7 +11,7 @@ It has been written for the "[Mathematics and Biology Workgroup](http://www.gt-m
 ### Just test it
 To test it if you have python2.7 and pip installed you can just type:
 
-```Shell
+```bash
 # Global install:
 $ sudo pip install -U https://github.com/geeklhem/ipdt/zipball/master 
 # Local install (do not need root privileges):
@@ -21,12 +21,12 @@ $ sudo pip uninstall ipdt
 ``` 
 
 Then you can run a tournament between all defined strategies:
-```Shell
+```bash
 $ ipdt tournament 
 ``` 
 
 You can restrict the tournament to a subset of strategies:
-```Shell
+```bash
 # list all available strategies
 $ ipdt list
 # A tournament with only two strategies 
@@ -34,7 +34,7 @@ $ ipdt tournament --players naivecoop defector randomplayer
 ``` 
 
 You can also run a single match between two strategies:
-```Shell
+```bash
 $ ipdt match -p naivecoop randomplayer
 ```
 
@@ -48,7 +48,7 @@ In order to write a strategy, you should install the module in
 "develop mode", this way the modification you do in the code will be
 immediately available. 
 
-```Shell
+```bash
 # Download it 
 $ git clone https://github.com/geeklhem/ipdt/ #using git (useful if you want to submit your code)  
 $ wget https://github.com/geeklhem/ipdt/archive/master.zip; unzip master.zip ; mv ipdt-master ipdt  #without git
@@ -64,7 +64,7 @@ code, it is a good idea to go and check them.
 
 A strategy module to be valid must:
 - Have a different name than the other modules.
-- Contain a Player object inheriting from ipdt.player.Player 
+- Contain a `Player` object inheriting from `ipdt.player.Player` 
 - This object must have a method `play(self,last_move)` that take the
   opponent last move (as a boolean, `True` for cooperation, `False` for
   defection and `None` in the first round) and return a boolean for your
@@ -78,14 +78,26 @@ You can:
   `param["cd"],param["cc"],param["dc"],param["dd"],` contains the
   payoff matrix (the first character is the move: `c` or `d` of the
   focal player). 
-- Define the Player.name and Player.author class variable to
-  characterize your strategy
+- Define the `Player.name` and `Player.author` class variable to
+  characterize your strategy.
+
+Here is an example code for the naive cooperator strategy:
+
+```python
+import ipdt.player
+
+class Player(ipdt.player.Player):
+    name = "Naive cooperator"
+	author = "Robert Axelrod"
+    def play(self, last_move):
+        return True 
+```
 
 #### Submit a strategy 
 
 You can either do a [github pull
 request](https://guides.github.com/introduction/flow/index.html) or
-send us your module (the *.py file) at gt-mathsbio.contact<AT>lists.ens.fr. 
+send us your module (the *.py file) at gt-mathsbio.contact(AT)lists.ens.fr. 
 
 ## License
 
