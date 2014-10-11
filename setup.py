@@ -8,4 +8,5 @@ setup(name='ipdt',
       author_email='guilhem.doulcier@ens.fr',
       license='GPLV3',
       packages=['ipdt'],
+      scripts=['bin/ipdt'],
       zip_safe=False)

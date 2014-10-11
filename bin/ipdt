@@ -1,0 +1,80 @@
+#!/usr/bin/env python
+"""ipdt - Copyright 2014 Guilhem Doulcier.
+
+ipdt (Iterative Prisoner's Dilemma Tournament) is a simple software to
+organise iterative prisoner's dilemma competition between strategies.
+
+This program is ditributed under the term of the GNU General Public
+Licence v3 (or later) with ABSOLUTELY NO WARRANTY. This is free
+software, and you are welcome to redistribute it.
+"""
+
+import logging
+import os
+import argparse
+
+# Argparse config 
+parser = argparse.ArgumentParser(description=__doc__,formatter_class=argparse.RawDescriptionHelpFormatter,)
+parser.add_argument('command',
+                    help='Command',
+                    type=str)
+parser.add_argument('-p','--players',
+                    nargs="*",
+                    default=["naivecoop","defector"],
+                    help="players names")
+parser.add_argument('-v','--verbose',
+                    help='Verbosity level : -v warning, -vv info, -vvv debug, (default debug)',
+                    action="count",
+                    default=-1)
+parser.add_argument('-m','--payoff_matrix',
+                    type=float,
+                    help='Payoff matrix CC,CD,DC,DD',
+                    nargs=4,
+                    default=(10,-5,20,0))
+
+
+args = parser.parse_args()
+
+# Logging config
+log_levels = [logging.WARNING,logging.INFO,logging.DEBUG]
+
+logging.addLevelName( logging.WARNING, "\033[1;31m%s\033[1;0m" % logging.getLevelName(logging.WARNING))
+logging.addLevelName( logging.ERROR, "\033[1;41m%s\033[1;0m" % logging.getLevelName(logging.ERROR))
+logging.addLevelName( logging.INFO, "\033[1;42m%s\033[1;0m" % logging.getLevelName(logging.INFO))
+logging.addLevelName( logging.DEBUG, "\033[1;43m%s\033[1;0m" % logging.getLevelName(logging.DEBUG))
+# logging.getLogger().addFilter(logging.Filter("ipdt"))
+
+logger = logging.getLogger('ipdt')
+logger.setLevel(log_levels[args.verbose])
+ch = logging.StreamHandler()
+ch.setLevel(log_levels[args.verbose])
+ch.setFormatter(logging.Formatter('%(levelname)s:%(name)s: %(message)s'))
+logger.addHandler(ch)
+
+
+# Imports 
+import ipdt.tournament
+import ipdt.players
+
+order = ["cc","cd","dc","dd"]
+param = {}
+for move,po in zip(order,args.payoff_matrix):
+    param[move] = po
+
+if args.command == "match":
+
+    if hasattr(ipdt.players, args.players[0]):
+       P1= getattr(ipdt.players, args.players[0]).Player
+    if hasattr(ipdt.players, args.players[1]):
+       P2= getattr(ipdt.players, args.players[1]).Player
+
+    payoff = ipdt.tournament.match(P1,P2,param)
+    if payoff[0]>payoff[1]:
+        winner = "P1"
+    elif payoff[0]==payoff[1]:
+        winner = "NOBODY"
+    else:
+        winner = "P2"
+    print("Match endend: {} WINS !".format(winner))
+    logger.info("Payoffs: {}".format(payoff))
+    

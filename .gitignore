@@ -1,0 +1,3 @@
+*.pyc
+ipdt.egg-info/*
+env/*
