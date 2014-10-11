@@ -7,6 +7,6 @@ setup(name='ipdt',
       author='Guilhem Doulcier',
       author_email='guilhem.doulcier@ens.fr',
       license='GPLV3',
-      packages=['ipdt'],
+      packages=['ipdt','ipdt.players'],
       scripts=['bin/ipdt'],
       zip_safe=False)
