@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """ipdt - Copyright 2014 Guilhem Doulcier.
 
 ipdt (Iterated Prisoner's Dilemma Tournament) is a simple software to
