@@ -17,7 +17,8 @@ import argparse
 parser = argparse.ArgumentParser(description=__doc__,formatter_class=argparse.RawDescriptionHelpFormatter,)
 parser.add_argument('command',
                     help='Command',
-                    type=str)
+                    type=str,
+                    choices=['tournament', 'list', 'match'])
 parser.add_argument('-p','--players',
                     nargs="*",
                     default=[],
@@ -32,10 +33,11 @@ parser.add_argument('-T','--turns',
                     default=100)
 parser.add_argument('--replicas',
                     type=int,
-                    help='Number of repetition of the tornament',
+                    help='Number of repetition of the tournament',
                     default=1)
-
-
+parser.add_argument('--html',
+                    help='Ask for HTML export of the results (tournament only).',
+                    type=str)
 parser.add_argument('-m','--payoff_matrix',
                     type=float,
                     help='Payoff matrix CC,CD,DC,DD',
@@ -66,6 +68,7 @@ logger.addHandler(ch)
 # Imports 
 import ipdt.tournament
 import ipdt.players
+import ipdt.export
 
 # === SET THE PARAMETERS ===
 param = {}
@@ -101,11 +104,26 @@ if args.command == "match":
 
 if args.command == "tournament":
     players = [ getattr(ipdt.players, name).Player for name in args.players]
-    ranking = ipdt.tournament.tournament(players,param)
+    ranking,details = ipdt.tournament.tournament(players,param)
     print("Tournament ended ! Ranking:")
     for n,(score,name) in enumerate(ranking):
         print("{}: {} ({} points)".format(n+1,name,score))
-    
+
+    if args.html:
+        info = {}
+        for code,P in zip(args.players,players):
+            info[P.name] = {"author":P.author,
+                            "name":P.name,
+                            "code":code}
+        exporter = ipdt.export.HTMLexporter(args.html+".html",
+                                            ranking,
+                                            details,
+                                            param,
+                                            info)
+        exporter.save()
+
+        
+
 if args.command == "list":
     print("Available strategies are:")
     print("{:20} {:20} {}".format("Code","Author","Name"))
