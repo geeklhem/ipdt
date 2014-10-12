@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='ipdt',
-      version='0.1',
+      version='0.2',
       description='Iterate Prisoner Dilemma Tournament',
       url='http://github.com/geeklhem/ipdt',
       author='Guilhem Doulcier',

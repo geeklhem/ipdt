@@ -5,7 +5,7 @@ to organize iterated prisoner's dilemma competition between different
 strategies.
 
 It has been written for the "[Mathematics and Biology Workgroup](http://www.gt-mathsbio.biologie.ens.fr/)" in the
-École normale supérieure (Paris, France) and give [this kind of output](http://www.eleves.ens.fr/home/doulcier/projects/math/ipdt.html).
+École normale supérieure (Paris, France) and it gives [this kind of output](http://www.eleves.ens.fr/home/doulcier/projects/math/ipdt.html).
 
 ## How to 
 ### Just test it
@@ -84,7 +84,7 @@ You can also:
   payoff matrix (the first character is the move: `c` or `d` of the
   focal player);
 - Define the `Player.name` and `Player.author` class variable to
-  characterize your strategy.
+  characterize your strategy;
 - Write a docstring for the class to describe your strategy (it is
   used in the HTML output).
 
