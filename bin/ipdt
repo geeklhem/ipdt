@@ -25,7 +25,7 @@ parser.add_argument('-p','--players',
                     default=[],
                     help="players names")
 parser.add_argument('-v','--verbose',
-                    help='Verbosity level : -v warning, -vv info, -vvv debug, (default debug)',
+                    help='Verbosity level : -v warning, -vv info, -vvv debug',
                     action="count",
                     default=0)
 parser.add_argument('-T','--turns',
@@ -49,7 +49,7 @@ parser.add_argument('-m','--payoff_matrix',
 args = parser.parse_args()
 
 # Logging config
-log_levels = [logging.WARNING,logging.INFO,logging.DEBUG]
+log_levels = [logging.ERROR,logging.WARNING,logging.INFO,logging.DEBUG]
 
 logging.addLevelName( logging.WARNING, "\033[1;31m%s\033[1;0m" % logging.getLevelName(logging.WARNING))
 logging.addLevelName( logging.ERROR, "\033[1;41m%s\033[1;0m" % logging.getLevelName(logging.ERROR))
@@ -59,6 +59,7 @@ logging.addLevelName( logging.DEBUG, "\033[1;43m%s\033[1;0m" % logging.getLevelN
 # logging.getLogger().addFilter(logging.Filter("ipdt"))
 
 logger = logging.getLogger('ipdt')
+
 logger.setLevel(log_levels[args.verbose])
 ch = logging.StreamHandler()
 ch.setLevel(log_levels[args.verbose])
