@@ -69,6 +69,12 @@ text-align:center;
 }
 
 
+strong[title]:hover:after
+{
+  background-color:#1C1C1C;
+  color: rgb(0,179, 200);
+}
+
 #Content {
   padding:0 1.5rem;
   font-size:medium;
@@ -159,7 +165,7 @@ class HTMLexporter(object):
         move_color = {}
         for move in ["cc","dc","cd","dd"]:
             if param[move] > 0:
-                move_color[move] = 'class="green"' 
+                move_color[move] = 'class="green"'
             elif param[move] < 0:
                 move_color[move] = 'class="red"'
             else:
@@ -217,14 +223,17 @@ class HTMLexporter(object):
                 s+= '<td {}>{}</td>'.format(cl, po[k][j])
             s+= '</tr>\n'
         s += "</table>"
+
         return s
     def ranking(self,ranking,info):
         s = "<ol>\n"
         for score,code in ranking:
-            s+= "<li><strong>{1}</strong> (<em>{2}</em>) - {0} pts </li>".format(score,
-                                                                                 info[code]["name"],
-                                                                                 info[code]["author"])
+            s+= "<li><strong title=\"{3}\">{1}</strong> (<em>{2}</em>) - {0} pts </li>".format(score,
+                                                                                               info[code]["name"],
+                                                                                               info[code]["author"],
+                                                                                               info[code]["description"])
         s += "</ol>\n"
+        s += "<em>(Do a mouseover on the name of each strategy to get a short description)</em>"
         return s
 
     def output(self):

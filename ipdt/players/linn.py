@@ -44,12 +44,12 @@ class Player(ipdt.player.Player):
     Linn is a simple neural network with one hidden layer.
     
     Its inputs-neurons are:
-    - A biais (1)
-    - the proportion of the iteration elapsed
-    - the last 3 move of its oponent (Linn has a good memory of the direct past)
-    - the proportion of times Linn cooperated
+    - A biais (1),
+    - the proportion of the iteration elapsed,
+    - the last 3 move of its oponent (Linn has a good memory of the direct past),
+    - the proportion of times Linn cooperated,
     - the proportion of times its oponent cooperated (Linn has a vague memory 
-      of the not so direct past)
+      of the distant past).
     """
 
     name = "LINN"

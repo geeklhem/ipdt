@@ -116,7 +116,8 @@ if args.command == "tournament":
         for code,P in zip(args.players,players):
             info[P.name] = {"author":P.author,
                             "name":P.name,
-                            "code":code}
+                            "code":code,
+                            "description":P.__doc__}
         exporter = ipdt.export.HTMLexporter(args.html+".html",
                                             ranking,
                                             details,
