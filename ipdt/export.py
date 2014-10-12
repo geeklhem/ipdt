@@ -139,7 +139,7 @@ TEMPLATE = """
 </html>
 """
 
-FOOTER = '<a href="http://www.gt-mathsbio.biologie.ens.fr/">GT-MathBio </a> -- Page generated on the {date} by <a href="https://github.com/geeklhem/ipdt"> ipdt</a>.'
+FOOTER = '<a href="http://www.gt-mathsbio.biologie.ens.fr/">GT-MathsBio </a> -- Page generated on the {date} by <a href="https://github.com/geeklhem/ipdt"> ipdt</a>.'
 
 class HTMLexporter(object):
     def __init__(self,path,ranking,payoff_matrix,param,info_strategies):

@@ -8,7 +8,7 @@ class Player(object):
     output of the program.
     """
     name = "Generic player"
-    author = "GT-mathbio"
+    author = "GT-mathsbio"
     
     def __init__(self, param):
         """
