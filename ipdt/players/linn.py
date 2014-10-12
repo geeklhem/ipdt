@@ -28,7 +28,7 @@ def neuron(inputs,weights,activation_function):
     Args:
         inputs (list): x_i 
         weights (list): w_i
-        activation_function (list):
+        activation_function (function): f
     Return:
         (float): f(Sum_j w_i*x_j)
 
