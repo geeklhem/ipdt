@@ -192,13 +192,20 @@ class HTMLexporter(object):
     def details(self,ranking,po,info):
         s = '<table border="0" cellpadding="3" cellspacing="3">\n<tr><th></th>\n'
         order = zip(*ranking)[1]
-
+        
+        if len(order)>5:
+            for n,k in enumerate(order) :
+               info[k]["rank"] = n+1
+            display = "rank"
+        else:
+            display = "name"
+            
         for k in order :
-            s += '<th>{}</th>'.format(info[k]["name"])
+            s += '<th>{}</th>'.format(info[k][display])
         s+= '</tr>\n'
         for k in order:
             s+= '<tr>\n'
-            s+= '<th>{}</th>\n'.format(info[k]["name"])
+            s+= '<th>{}</th>\n'.format(info[k][display])
             for j in order:
                 if po[k][j] > 0:
                     cl = 'class="green"' 
