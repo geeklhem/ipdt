@@ -5,7 +5,7 @@ to organize iterated prisoner's dilemma competition between different
 strategies.
 
 It has been written for the "[Mathematics and Biology Workgroup](http://www.gt-mathsbio.biologie.ens.fr/)" in the
-École normale supérieure (Paris, France).
+École normale supérieure (Paris, France) and give [this kind of output](http://www.eleves.ens.fr/home/doulcier/projects/math/ipdt.html).
 
 ## How to 
 ### Just test it
@@ -85,6 +85,8 @@ You can also:
   focal player);
 - Define the `Player.name` and `Player.author` class variable to
   characterize your strategy.
+- Write a docstring for the class to describe your strategy (it is
+  used in the HTML output).
 
 Here is an example code for the naive cooperator strategy:
 
@@ -96,7 +98,7 @@ class Player(ipdt.player.Player):
     name = "Naive cooperator"
 	author = "Robert Axelrod"
 	
-	def __init__(self,param):
+	def __init__(self, param):
         """
         Use this function to set up match wise attributes.
 
