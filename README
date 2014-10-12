@@ -42,6 +42,11 @@ If you want more detailed info on the output, you can use the options
 (from the less to the more detailed output) `-v`: warnings (default),
 `-vv` info or `-vvv` debug.
 
+You can have a [nice HTML5
+export](http://eleves.ens.fr/home/doulcier/projects/math/ipdt.html) by
+using the `--html filename` option: it will create a `filename.html`
+file in your current folder.
+
 ### Write a strategy
 #### Get the code 
 In order to write a strategy, you should install the module in
