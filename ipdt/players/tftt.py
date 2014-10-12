@@ -8,10 +8,12 @@ class Player(ipdt.player.Player):
     def play(self,last_move):
         
         if last_move is None or self.before_last_move is None:
-            return True
+            output = True
         else:
-            if not last_move and not self.before_last_move:
-                return False
+            if (not last_move) and (not self.before_last_move):
+                output = False
             else:
-                return True
+                output = True
+
         self.before_last_move = last_move
+        return output
