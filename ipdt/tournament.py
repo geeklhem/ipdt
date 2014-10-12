@@ -46,7 +46,7 @@ def tournament(players,param):
             try:
                 payoff = match(pl[P],pl[P],param)
             except Exception as e:
-                logger.critical("{0} throw an exception playing against itself : {} ".format(P,e))
+                logger.critical("{0} throw an exception playing against itself : {1} ".format(P,e))
             else:
                 points[P] += payoff[0] + payoff[1]
                 detailed_payoffs[P] = {P:int(points[P]/2)}
