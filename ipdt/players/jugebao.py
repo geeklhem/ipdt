@@ -13,8 +13,8 @@ class Player(ipdt.player.Player):
     author = "François Bienvenu"
 
     def __init__(self, param):
-        self.p = 0.5
-        self.n = 2
+        self.p = 1
+        self.n = 1
 
     def play(self, last_move):
         if last_move == None :
