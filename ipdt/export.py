@@ -207,11 +207,11 @@ class HTMLexporter(object):
             display = "name"
             
         for k in order :
-            s += '<th>{}</th>'.format(info[k][display])
+            s += '<th title="{1}">{0}</th>'.format(info[k][display],info[k]["name"])
         s+= '</tr>\n'
         for k in order:
             s+= '<tr>\n'
-            s+= '<th>{}</th>\n'.format(info[k][display])
+            s += '<th title="{1}">{0}</th>'.format(info[k][display],info[k]["name"])
             for j in order:
                 if po[k][j] > 0:
                     cl = 'class="green"' 
