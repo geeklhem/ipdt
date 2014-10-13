@@ -9,4 +9,6 @@ setup(name='ipdt',
       license='GPLV3',
       packages=['ipdt','ipdt.players'],
       scripts=['bin/ipdt'],
+      test_suite='nose.collector',
+      tests_require=['nose'],
       zip_safe=False)
