@@ -29,7 +29,7 @@ You can restrict the tournament to a subset of strategies:
 ```bash
 # list all available strategies
 $ ipdt list
-# A tournament with only two strategies 
+# A tournament with only three strategies 
 $ ipdt tournament --players naivecoop defector randomplayer
 ``` 
 
@@ -50,7 +50,7 @@ file in your current folder.
 ### Write a strategy
 #### Get the code 
 In order to write a strategy, you should install the module in
-"develop mode", this way the modification you do in the code will be
+"develop mode", this way the modifications you do in the code will be
 immediately available. 
 
 ```bash
