@@ -158,7 +158,7 @@ class HTMLexporter(object):
         
 
     def general_info(self,param):
-        s = "<p><em>This is the result of an iterated prosionner's dilemma tournament.</em></p>"
+        s = "<p><em>This is the result of an iterated prisoner's dilemma tournament.</em></p>"
         s += "</p>The number of iteration per match is {} and the number of replicas is {}.</p>".format(param["T"],param["replicas"])
         s += "<p> The payoff matrix is: </p>"
 
