@@ -49,7 +49,10 @@ def tournament(players,param):
                 logger.critical("{0} throw an exception playing against itself : {1} ".format(P,e))
             else:
                 points[P] += payoff[0] + payoff[1]
-                detailed_payoffs[P] = {P:int(points[P]/2)}
+                try:
+                    detailed_payoffs[P][P] +=  int((payoff[0] + payoff[1])/2)
+                except KeyError:
+                    detailed_payoffs[P] = {P:int((payoff[0] + payoff[1])/2)}
                 logger.info("{0} against itself ({1}pts)".format(P,points[P]))
 
                             
@@ -59,9 +62,13 @@ def tournament(players,param):
 
             points[P1] += payoff[0]
             points[P2] += payoff[1]
-            detailed_payoffs[P1][P2] = payoff[0]
-            detailed_payoffs[P2][P1] = payoff[1]
-            
+            try:
+                detailed_payoffs[P1][P2] += payoff[0]
+                detailed_payoffs[P2][P1] += payoff[1]
+            except KeyError:
+                detailed_payoffs[P1][P2] = payoff[0]
+                detailed_payoffs[P2][P1] = payoff[1]
+ 
             logger.info("{0} ({2}pts) vs {1} ({3}pts)".format(P1,P2,
                                                               payoff[0],payoff[1]))        
 
