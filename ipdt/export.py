@@ -220,7 +220,9 @@ class HTMLexporter(object):
                 else:
                     cl = 'class="blue"' 
                 
-                s+= '<td {}>{}</td>'.format(cl, po[k][j])
+                s+= '<td {0} title="{2} vs {3}">{1}</td>'.format(cl, po[k][j],
+                                                                 info[k]["name"],
+                                                                 info[j]["name"])
             s+= '</tr>\n'
         s += "</table>"
 
