@@ -12,10 +12,10 @@ It has been written for the "[Mathematics and Biology Workgroup](http://www.gt-m
 To test it, if you have python2.7 and pip available the installation is quite simple:
 
 ```bash
-# Global install:
+# Global install (for all users):
 $ sudo pip install -U https://github.com/geeklhem/ipdt/zipball/master 
-# Local install (do not need root privileges):
-$ pip install --user  -U https://github.com/geeklhem/ipdt/zipball/master
+# Local install (for the current user only, do not need root privileges):
+$ pip install --user -U https://github.com/geeklhem/ipdt/zipball/master
 # To uninstall 
 $ sudo pip uninstall ipdt
 ``` 
@@ -57,13 +57,18 @@ In order to write a strategy, you should install the module in
 immediately available. 
 
 ```bash
-# Download it 
-$ git clone https://github.com/geeklhem/ipdt/ #using git (useful if you want to submit your code)  
-$ wget https://github.com/geeklhem/ipdt/archive/master.zip; unzip master.zip ; mv ipdt-master ipdt  #without git
-# install it
-$ cd ipdt 
-$ python setup.py develop
-``` 
+## 1. Download it.
+# Using git (useful if you want to submit your code):  
+$ git clone https://github.com/geeklhem/ipdt/
+# Or without git:
+$ wget https://github.com/geeklhem/ipdt/archive/master.zip; unzip master.zip ; mv ipdt-master ipdt  
+
+## 2. Install it
+$ cd ipdt
+$ sudo python setup.py develop ## Globally (all user) 
+$ python setup.py develop --user ## Locally (just for you, if you do not want/cannot execute it as root).
+```
+
 #### Create your module
 
 In ipdt, each strategies is stored as a python module (`codename.py`)
