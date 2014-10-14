@@ -1,5 +1,5 @@
 """export.py: export facilities"""
-
+import re 
 import time 
 
 CSS = """
@@ -225,13 +225,15 @@ class HTMLexporter(object):
         s += "</table>"
 
         return s
+
     def ranking(self,ranking,info):
         s = "<ol>\n"
         for score,code in ranking:
-            s+= "<li><strong title=\"{3}\">{1}</strong> (<em>{2}</em>) - {0} pts </li>".format(score,
-                                                                                               info[code]["name"],
-                                                                                               info[code]["author"],
-                                                                                               info[code]["description"])
+            s+= ("<li><strong title=\"{3}\">{1}</strong> "
+                 "(<em>{2}</em>) - {0} pts </li>\n").format(score,
+                                                          info[code]["name"],
+                                                          info[code]["author"],
+                                                          info[code]["description"])
         s += "</ol>\n"
         s += "<em>(Do a mouseover on the name of each strategy to get a short description)</em>"
         return s

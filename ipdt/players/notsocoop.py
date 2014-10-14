@@ -3,7 +3,7 @@ from __future__ import division
 import ipdt.player
 
 class Player(ipdt.player.Player) :
-      """" NotSoCoop" coopère tout le temps sauf à quelques instants où il
+      """NotSoCoop coopère tout le temps sauf à quelques instants où il
       met un 'false' à la place d'un 'True' pour prendre l'avantage.
       """
 

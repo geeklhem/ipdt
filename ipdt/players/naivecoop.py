@@ -1,7 +1,7 @@
 import ipdt.player
 
 class Player(ipdt.player.Player):
-    """ Naive cooperator, a strategy that think everyone is nice. """
+    """Naive cooperator, a strategy that think everyone is nice. """
     name = "Naive cooperator"
 
     def __init__(self,param):
