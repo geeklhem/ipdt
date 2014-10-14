@@ -23,7 +23,12 @@ parser.add_argument('command',
 parser.add_argument('-p','--players',
                     nargs="*",
                     default=[],
-                    help="players names")
+                    help="Strategies to use codenames")
+parser.add_argument('-e','--exclude',
+                    nargs="*",
+                    default=[],
+                    help="Strategies to exclude codenames")
+
 parser.add_argument('-v','--verbose',
                     help='Verbosity level : -v warning, -vv info, -vvv debug',
                     action="count",
@@ -82,10 +87,12 @@ order = ["cc","cd","dc","dd"]
 for move,po in zip(order,args.payoff_matrix):
     param[move] = po
 
-# If there is no players defined, take all possible strategies
+# If there is no players defined, take all possible strategies.
 if len(args.players) == 0:
     args.players = ipdt.players.__all__
-    
+# If they are exluded strategies, remove them.
+if len(args.exclude) != 0:
+    args.players = list(set(args.players) - set(args.exclude))
 
 
 if args.command == "match":   
