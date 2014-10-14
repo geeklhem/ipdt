@@ -27,10 +27,13 @@ $ ipdt tournament
 
 You can restrict the tournament to a subset of strategies:
 ```bash
-# list all available strategies
+# list all available strategies:
 $ ipdt list
-# A tournament with only three strategies 
+# A tournament with only three strategies:
 $ ipdt tournament --players naivecoop defector randomplayer
+# A tournament with all strategies but the simpletons:
+$ ipdt tournament --exclude naivecoop defector 
+
 ``` 
 
 You can also run a single match between two strategies:
