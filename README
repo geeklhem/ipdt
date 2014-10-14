@@ -15,7 +15,7 @@ To test it, if you have python2.7 and pip available the installation is quite si
 # Global install:
 $ sudo pip install -U https://github.com/geeklhem/ipdt/zipball/master 
 # Local install (do not need root privileges):
-$ pip --user install  -U https://github.com/geeklhem/ipdt/zipball/master
+$ pip install --user  -U https://github.com/geeklhem/ipdt/zipball/master
 # To uninstall 
 $ sudo pip uninstall ipdt
 ``` 
