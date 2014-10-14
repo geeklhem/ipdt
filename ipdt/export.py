@@ -1,6 +1,8 @@
 """export.py: export facilities"""
+from __future__ import division
 import re 
 import time 
+import math
 
 CSS = """
 body {
@@ -68,6 +70,10 @@ text-align:center;
   background-color:  rgb(203, 75, 22);
 }
 
+.max
+{
+  font-weight: bold;
+}
 
 strong[title]:hover:after
 {
@@ -198,6 +204,18 @@ class HTMLexporter(object):
     def details(self,ranking,po,info):
         s = '<table border="0" cellpadding="3" cellspacing="3">\n<tr><th></th>\n'
         order = zip(*ranking)[1]
+
+        max_po = max([max(po[k].values()) for k in order])
+        min_po = min([min(po[k].values()) for k in order])
+        mean_po = sum([sum(po[k].values())/len(order) for k in order])/len(order)
+        std_po =  math.sqrt(
+            sum(
+                [sum(
+                    [(x-mean_po)**2 for x in po[k].values()])
+                 for k in order]
+            )/len(order)**2)
+        
+        norm = lambda x: int(100*(x - min_po) / (max_po-min_po)) 
         
         if len(order)>5:
             for n,k in enumerate(order) :
@@ -213,19 +231,28 @@ class HTMLexporter(object):
             s+= '<tr>\n'
             s += '<th title="{1}">{0}</th>'.format(info[k][display],info[k]["name"])
             for j in order:
-                if po[k][j] > 0:
+                if po[k][j] - mean_po > 0.5*std_po:
                     cl = 'class="green"' 
-                elif po[k][j] < 0:
+                elif po[k][j] - mean_po < -0.5*std_po:
                     cl = 'class="red"'
                 else:
-                    cl = 'class="blue"' 
-                
-                s+= '<td {0} title="{2} vs {3}">{1}</td>'.format(cl, po[k][j],
-                                                                 info[k]["name"],
-                                                                 info[j]["name"])
-            s+= '</tr>\n'
-        s += "</table>"
+                    cl = 'class="blue"'
 
+                if po[k][j] == max_po or po[k][j] == min_po:
+                    cl = cl[:-1] + ' max"\''
+
+                s+= '<td {0} title="{2} vs {3}: {4} pts">{1}</td>'.format(cl, norm(po[k][j]),
+                                                                          info[k]["name"],
+                                                                          info[j]["name"],
+                                                                          po[k][j])
+            s+= '</tr>\n'
+        s += "</table>\n"
+        s += ('<p>Total payoff over all replicas normalized in [0,100].<br/> '
+              ' A blue color means that the value is in a 0.5 standard deviation range'
+              ' from the mean.</p>')
+        
+        s += ("<p><em>(Do a mouseover on each cell to get the strategies' names"
+              " and non-normalized payoff.)</em></p>")
         return s
 
     def ranking(self,ranking,info):
@@ -237,7 +264,7 @@ class HTMLexporter(object):
                                                           info[code]["author"],
                                                           info[code]["description"])
         s += "</ol>\n"
-        s += "<em>(Do a mouseover on the name of each strategy to get a short description)</em>"
+        s += "<em>(Do a mouseover on the name of each strategy to get a short description.)</em>"
         return s
 
     def output(self):
