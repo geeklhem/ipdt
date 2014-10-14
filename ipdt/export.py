@@ -65,6 +65,11 @@ text-align:center;
   background-color: rgb(133, 153, 0);
 }
 
+.yellow
+{
+  background-color: #b58900;
+}
+
 .red
 {
   background-color:  rgb(203, 75, 22);
@@ -156,10 +161,20 @@ FOOTER = '<a href="http://www.gt-mathsbio.biologie.ens.fr/">GT-MathsBio </a> -- 
 class HTMLexporter(object):
     def __init__(self,path,ranking,payoff_matrix,param,info_strategies):
         self.path = path
+
+        moves = sorted([(move, param[move]) for move in ["cc","dc","cd","dd"]],
+                       key=lambda x:-x[1])  
+        colors = ['class="green"','class="blue"','class="yellow"','class="red"']
+        self.move_color = {}
+        for n,move in enumerate(moves):
+            self.move_color[move[0]] = colors[n] 
+
+        
         self.sections = [
             ("info","Informations",self.general_info(param)),
             ("ranking","Ranking",self.ranking(ranking,info_strategies)),
-            ("details","Detailed Results",self.details(ranking,payoff_matrix,info_strategies)),
+            ("details","Detailed Results",self.details(ranking, payoff_matrix,
+                                                       info_strategies, param)),
         ]
         
 
@@ -167,16 +182,6 @@ class HTMLexporter(object):
         s = "<p><em>This is the result of an iterated prisoner's dilemma tournament.</em></p>"
         s += "</p>The number of iteration per match is {} and the number of replicas is {}.</p>".format(param["T"],param["replicas"])
         s += "<p> The payoff matrix is: </p>"
-
-        move_color = {}
-        for move in ["cc","dc","cd","dd"]:
-            if param[move] > 0:
-                move_color[move] = 'class="green"'
-            elif param[move] < 0:
-                move_color[move] = 'class="red"'
-            else:
-                move_color[move] = 'class="blue"' 
-
         
         s+= """
         <table border="0" cellpadding="3" cellspacing="3">
@@ -196,24 +201,24 @@ class HTMLexporter(object):
 		<td {1[dd]}>{0[dd]}</td>
 	</tr>
         </table>
-        """.format(param,move_color)
+        """.format(param,self.move_color)
 
 
         return s
 
-    def details(self,ranking,po,info):
+
+    def get_color(self,score,param):
+        diff = sorted([(abs(score-param[m]*param["T"]),m)
+                       for m in ["cc","dc","cd","dd"]],
+                      key=lambda x:x[0])
+        return(self.move_color[diff[0][1]])
+    
+    def details(self,ranking,po,info,param):
         s = '<table border="0" cellpadding="3" cellspacing="3">\n<tr><th></th>\n'
         order = zip(*ranking)[1]
 
         max_po = max([max(po[k].values()) for k in order])
         min_po = min([min(po[k].values()) for k in order])
-        mean_po = sum([sum(po[k].values())/len(order) for k in order])/len(order)
-        std_po =  math.sqrt(
-            sum(
-                [sum(
-                    [(x-mean_po)**2 for x in po[k].values()])
-                 for k in order]
-            )/len(order)**2)
         
         norm = lambda x: int(100*(x - min_po) / (max_po-min_po)) 
         
@@ -231,13 +236,7 @@ class HTMLexporter(object):
             s+= '<tr>\n'
             s += '<th title="{1}">{0}</th>'.format(info[k][display],info[k]["name"])
             for j in order:
-                if po[k][j] - mean_po > 0.5*std_po:
-                    cl = 'class="green"' 
-                elif po[k][j] - mean_po < -0.5*std_po:
-                    cl = 'class="red"'
-                else:
-                    cl = 'class="blue"'
-
+                cl = self.get_color(po[k][j],param)
                 if po[k][j] == max_po or po[k][j] == min_po:
                     cl = cl[:-1] + ' max"\''
 
@@ -248,8 +247,8 @@ class HTMLexporter(object):
             s+= '</tr>\n'
         s += "</table>\n"
         s += ('<p>Total payoff over all replicas normalized in [0,100].<br/> '
-              ' A blue color means that the value is in a 0.5 standard deviation range'
-              ' from the mean.</p>')
+              ' The cell color gives the nearest payoff in a mono-move strategy '
+              ' (see payoff matrix for reference).</p>')
         
         s += ("<p><em>(Do a mouseover on each cell to get the strategies' names"
               " and non-normalized payoff.)</em></p>")
