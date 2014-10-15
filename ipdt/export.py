@@ -269,7 +269,7 @@ class HTMLexporter(object):
         max_po = max([max(po[k].values()) for k in order])
         min_po = min([min(po[k].values()) for k in order])
         
-        norm = lambda x: int(100*(x - min_po) / (max_po-min_po)) 
+        norm = lambda x: int(100*(x - min_po) / (max_po-min_po)) if (max_po-min_po) else x
         
         if len(order)>5:
             for n,k in enumerate(order) :

@@ -37,7 +37,7 @@ def normalize_po(payoffs):
     max_po = max([max(payoffs[k].values()) for k in order])
     min_po = min([min(payoffs[k].values()) for k in order])
     
-    norm = lambda x: int(100*(x - min_po) / (max_po-min_po)) 
+    norm = lambda x: int(100*(x - min_po) / (max_po-min_po)) if (max_po-min_po) else x
 
     for k in order:
         out[k] = {}
