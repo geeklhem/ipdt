@@ -3,6 +3,7 @@
 from __future__ import division
 import logging
 from ipdt.tournament import tournament
+import random 
 logger = logging.getLogger("ipdt")
 
 
@@ -31,6 +32,27 @@ def new_proportions(proportions,payoffs):
     return out
 
 
+def mutation(proportions,mu=1e-2):
+    N = len(proportions)
+
+    # Get a random partition of the unit segment:
+    mt = sorted([random.random() for x in range(N-1)]) + [1]
+    mt = [mt[0]*mu] + [(x-y)*mu for x,y in zip(mt[1:],mt[:-1])]
+        
+    # Take the opposite 
+    mmt = [-x for x in mt]
+
+    # Suffle everything
+    random.shuffle(mt)
+    random.shuffle(mmt)
+
+    # Add to each proportion a positive and a negative number
+    # so the sum of proportion does not change.
+    for k,p,m in zip(proportions.keys(),mt,mmt):
+        proportions[k] += p - m
+
+    return proportions
+
 def normalize_po(payoffs):
     out = {}
     order = payoffs.keys()
@@ -56,7 +78,7 @@ def popdyn(players,param):
     
     time_series = dict([(k,[v]) for k,v in proportions.items()])
     for g in range(param["generations"]):
-        proportions = new_proportions(proportions,payoffs)
+        proportions = mutation(new_proportions(proportions,payoffs))
         for k,v in proportions.items():
             time_series[k].append(v)
         
