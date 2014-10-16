@@ -125,6 +125,27 @@ pre .bash {
   font-family:monospace;
   text-align:left;
 }
+
+#chart svg {
+  height: 600px;
+}
+
+table{
+margin: auto;
+}
+
+#ts th, #ts td {
+  color: black;
+  text-align:center;
+  background-color: white;
+}
+
+.'twhite'{
+    fill: rgb(255,255,255);
+    stroke: rgb(255,255,255);
+    color: rgb(255,255,255);
+}
+
 """
 
 TEMPLATE = """
@@ -137,7 +158,7 @@ TEMPLATE = """
 <title> 
 {title}
 </title>
-
+<link rel="stylesheet" href="http://www.eleves.ens.fr/home/doulcier/projects/math/nv.d3.css"></link>
 <style>
 {css}
 </style>
@@ -154,6 +175,50 @@ TEMPLATE = """
 
 </body>
 </html>
+"""
+
+SCRIPT ="""
+
+<script src="http://www.eleves.ens.fr/home/doulcier/projects/math/d3.v3.js"></script>
+<script src="http://www.eleves.ens.fr/home/doulcier/projects/math/nv.d3.min.js"></script>
+
+<script>
+var data = {data}
+nv.addGraph(function() {{
+  var chart = nv.models.stackedAreaChart()
+                .x(function(d) {{ return d[0] }})
+                .y(function(d) {{ return d[1] }})
+                .clipEdge(true)
+                .useInteractiveGuideline(true)
+                ;
+
+  chart.xAxis
+      .showMaxMin(false)
+;
+
+  chart.yAxis
+      .tickFormat(d3.format(',.2f'));
+
+  d3.select('#chart svg')
+    .datum(data)
+      .transition().duration(500).call(chart);
+
+  d3.selectAll('#chart svg text')
+     .style('fill','#839496');
+
+  d3.selectAll('#nv-controlsWrap')
+     .style('display','None');
+
+
+
+  nv.utils.windowResize(chart.update);
+
+  return chart;
+}});
+
+
+
+</script>
 """
 
 FOOTER = '<a href="http://www.gt-mathsbio.biologie.ens.fr/">GT-MathsBio </a> -- Page generated on the {date} by <a href="https://github.com/geeklhem/ipdt"> ipdt</a>.'
@@ -173,7 +238,7 @@ class HTMLexporter(object):
         self.sections = [
             ("info","Informations",self.general_info(param)),
             ("ranking","Ranking",self.ranking(ranking,info_strategies)),
-            ("details","Detailed Results",self.details(ranking, payoff_matrix,
+            ("details","Detailed Results",self.details(zip(*ranking)[1], payoff_matrix,
                                                        info_strategies, param)),
         ]
         
@@ -208,19 +273,18 @@ class HTMLexporter(object):
 
 
     def get_color(self,score,param):
-        diff = sorted([(abs(score-param[m]*param["T"]),m)
+        diff = sorted([(abs(score-param[m]*param["T"]*param["replicas"]),m)
                        for m in ["cc","dc","cd","dd"]],
                       key=lambda x:x[0])
         return(self.move_color[diff[0][1]])
     
-    def details(self,ranking,po,info,param):
+    def details(self,order,po,info,param):
         s = '<table border="0" cellpadding="3" cellspacing="3">\n<tr><th></th>\n'
-        order = zip(*ranking)[1]
 
         max_po = max([max(po[k].values()) for k in order])
         min_po = min([min(po[k].values()) for k in order])
         
-        norm = lambda x: int(100*(x - min_po) / (max_po-min_po)) 
+        norm = lambda x: int(100*(x - min_po) / (max_po-min_po)) if (max_po-min_po) else x
         
         if len(order)>5:
             for n,k in enumerate(order) :
@@ -259,9 +323,9 @@ class HTMLexporter(object):
         for score,code in ranking:
             s+= ("<li><strong title=\"{3}\">{1}</strong> "
                  "(<em>{2}</em>) - {0} pts </li>\n").format(score,
-                                                          info[code]["name"],
-                                                          info[code]["author"],
-                                                          info[code]["description"])
+                                                            info[code]["name"],
+                                                            info[code]["author"],
+                                                            info[code]["description"])
         s += "</ol>\n"
         s += "<em>(Do a mouseover on the name of each strategy to get a short description.)</em>"
         return s
@@ -269,7 +333,7 @@ class HTMLexporter(object):
     def output(self):
         body = ""
         for code,title,text in self.sections:
-            body += "\n\n<div id='{}'><h2>{}</h2></div>\n{}".format(code,title,text)
+            body += "\n\n<div id='{}'><h2>{}</h2>\n{}\n</div>".format(code,title,text)
         footer =  FOOTER.format(date=time.asctime())
         out = TEMPLATE.format(body=body, css=CSS, title="ipdt report",footer=footer)
         return out 
@@ -277,6 +341,45 @@ class HTMLexporter(object):
     def save(self):
         with open(self.path,'w') as f:
             f.write(self.output())
+
+
+
+class HTMLexporterTS(HTMLexporter):
+    def __init__(self,path,time_series,payoff_matrix,param,info_strategies):
+        self.path = path
+
+        moves = sorted([(move, param[move]) for move in ["cc","dc","cd","dd"]],
+                       key=lambda x:-x[1])  
+        colors = ['class="green"','class="blue"','class="yellow"','class="red"']
+        self.move_color = {}
+        for n,move in enumerate(moves):
+            self.move_color[move[0]] = colors[n] 
+
+        
+        self.sections = [
+            ("info","Informations",self.general_info(param)),
+            ("ts","Time series",self.time_series_d3(time_series,info_strategies)),
+            ("details","Detailed Results",self.details(time_series.keys(), payoff_matrix,
+                                                       info_strategies, param)),
+        ]
+
+    def time_series_d3(self,time_series,info):
+        data = "[\n"
+        offset =  None
+        for k,v in time_series.items():
+            values = []
+            if offset is None:
+                offset =  [0]*len(v)
+            for j,p in enumerate(v):
+                values.append([j,p])
+                offset[j] += p
+            data += '{{ "key": "{}", "values":{}}},'.format(k,values)
+
+        data += "]\n"
+        s = SCRIPT.format(data=data)
+        s += '<div id="chart"> <svg></svg> </div>'
+        return s
+
 
 if __name__ == "__main__":
     from ipdt.tournament import DEFAULT_PARAM as param
@@ -292,3 +395,5 @@ if __name__ == "__main__":
                          "naivecoop":{"name":"Naive cooperator","author":"Axelrod"}
                      })
     a.save()
+
+

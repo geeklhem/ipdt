@@ -5,10 +5,10 @@ to organize iterated prisoner's dilemma competition between different
 strategies.
 
 It has been written for the "[Mathematics and Biology Workgroup](http://www.gt-mathsbio.biologie.ens.fr/)" in the
-École normale supérieure (Paris, France) and it gives [this kind of output](http://www.eleves.ens.fr/home/doulcier/projects/math/ipdt.html).
+École normale supérieure (Paris, France) and it gives [this kind](http://www.eleves.ens.fr/home/doulcier/projects/math/ipdt.html) [of output](http://www.eleves.ens.fr/home/doulcier/projects/math/popdyn.html ).
 
 ## How to 
-### Just test it
+### Play around
 To test it, if you have python2.7 and pip available the installation is quite simple:
 
 ```bash
@@ -36,7 +36,21 @@ $ ipdt tournament --exclude naivecoop defector
 
 ``` 
 
-You can also run a single match between two strategies:
+We have implemented a small model of population dynamics:
+
+- The payoffs are computed by a simple tournament.
+- Each strategies start with an equal proportion in the population.
+- Each generation, the geometric growth of their relative abundance is given
+  by their payoffs weighted by the encounter probability (product of abundances).
+
+```bash
+# Run a population dynamics model for 10 generations with a null mutation level.
+$ ipdt popdyn --generations 10 --mu 0
+```
+
+
+Finally, you can also run a single match between two strategies:
+
 ```bash
 $ ipdt match -p naivecoop randomplayer
 ```
@@ -46,7 +60,7 @@ If you want more detailed info on the output, you can use the options
 `-vv` info or `-vvv` debug.
 
 You can have a [nice HTML5
-export](http://www.eleves.ens.fr/home/doulcier/projects/math/ipdt.html) by
+export](http://www.eleves.ens.fr/home/doulcier/projects/math/ipdt.html) (and [for population dynamics](http://www.eleves.ens.fr/home/doulcier/projects/math/popdyn.html)) by
 using the `--html filename` option: it will create a `filename.html`
 file in your current folder.
 
