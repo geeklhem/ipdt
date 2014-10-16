@@ -45,11 +45,12 @@ We have implemented a small model of population dynamics:
 
 ```bash
 # Run a population dynamics model for 10 generations with a null mutation level.
-$ ipdt
-popdyn --generations 10 --mu 0 ```
+$ ipdt popdyn --generations 10 --mu 0
+```
 
 
 Finally, you can also run a single match between two strategies:
+
 ```bash
 $ ipdt match -p naivecoop randomplayer
 ```
