@@ -81,6 +81,11 @@ def popdyn(players,param):
         proportions = mutation(new_proportions(proportions,payoffs),param["mu"])
         for k,v in proportions.items():
             time_series[k].append(v)
-        
+        logger.debug("{}\n{}\n\n".format(g,",\n".join(["{1:<6.0%} {0}".format(n,x)
+                                                       for n,x in proportions.items()])))
 
+    print "Population dynamics ended: {} generations.".format(g+1)
+    print "\n".join(["{1:<6.1%} {0}".format(n,x)
+                     for n,x in proportions.items()])
+            
     return time_series,payoffs
