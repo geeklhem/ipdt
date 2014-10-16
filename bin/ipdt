@@ -36,9 +36,14 @@ parser.add_argument('-T','--turns',
                     type=int,
                     help='Number of turns',
                     default=100)
+parser.add_argument('--mu',
+                    type=float,
+                    help='Mutation level (used only if command is popdyn).',
+                    default=0)
+
 parser.add_argument('-g','--generations',
                     type=int,
-                    help='Number of generations (used only if command is popdyn)',
+                    help='Number of generations (used only if command is popdyn).',
                     default=100)
 parser.add_argument('--replicas',
                     type=int,
@@ -86,6 +91,7 @@ param = {}
 param["T"] = args.turns
 param["replicas"] = args.replicas
 param["generations"] = args.generations
+param["mu"] = args.mu
 
 # Payoff matrix 
 order = ["cc","cd","dc","dd"]

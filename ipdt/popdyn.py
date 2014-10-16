@@ -78,7 +78,7 @@ def popdyn(players,param):
     
     time_series = dict([(k,[v]) for k,v in proportions.items()])
     for g in range(param["generations"]):
-        proportions = mutation(new_proportions(proportions,payoffs))
+        proportions = mutation(new_proportions(proportions,payoffs),param["mu"])
         for k,v in proportions.items():
             time_series[k].append(v)
         
