@@ -127,8 +127,11 @@ pre .bash {
 }
 
 #chart svg {
-  height: 400px;
-  color: white;
+  height: 600px;
+}
+
+table{
+margin: auto;
 }
 
 #ts th, #ts td {
@@ -137,7 +140,11 @@ pre .bash {
   background-color: white;
 }
 
-
+.'twhite'{
+    fill: rgb(255,255,255);
+    stroke: rgb(255,255,255);
+    color: rgb(255,255,255);
+}
 
 """
 
@@ -195,6 +202,14 @@ nv.addGraph(function() {{
   d3.select('#chart svg')
     .datum(data)
       .transition().duration(500).call(chart);
+
+  d3.selectAll('#chart svg text')
+     .style('fill','#839496');
+
+  d3.selectAll('#nv-controlsWrap')
+     .style('display','None');
+
+
 
   nv.utils.windowResize(chart.update);
 
